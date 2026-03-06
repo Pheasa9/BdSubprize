@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 
 type PlaceStatus = 'visited' | 'todo';
 
@@ -49,6 +50,8 @@ export class TimelineComponent implements AfterViewInit, OnDestroy {
   // Frontend fallback used when ng serve does not expose /api routes.
   private readonly telegramBotToken = '8545203039:AAFRJD8BNuXb9hjxe3ALh89qq0C5ZWCcot0';
   private readonly telegramChatId = '1551363178';
+
+  constructor(private readonly router: Router) {}
 
   protected filter: 'all' | PlaceStatus = 'all';
   protected viewPreset: 'all' | 'angkor' | 'phnom-penh' | 'coast' | 'northeast' = 'all';
@@ -335,6 +338,10 @@ export class TimelineComponent implements AfterViewInit, OnDestroy {
 
   protected closeGoalList(): void {
     this.showGoalList = false;
+  }
+
+  protected goHome(): void {
+    void this.router.navigate(['/']);
   }
 
   protected onViewPresetChange(value: string): void {
@@ -857,38 +864,18 @@ export class TimelineComponent implements AfterViewInit, OnDestroy {
     }).toString();
 
     try {
-      const response = await fetch(baseUrl, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: this.telegramChatId,
-          text,
-        }),
-      });
-
-      return response.ok;
-    } catch {
-      // Some static hosts block reading cross-origin responses; fall through.
-    }
-
-    try {
-      // Use a simple request that can still be sent on static hosting.
-      await fetch(`${baseUrl}?${query}`, {
+      // GET avoids JSON preflight issues on some static hosts/browsers.
+      const response = await fetch(`${baseUrl}?${query}`, {
         method: 'GET',
-        mode: 'no-cors',
-        cache: 'no-store',
+        headers: { Accept: 'application/json' },
       });
-      return true;
-    } catch {
-      // Ignore and try final beacon fallback.
-    }
 
-    try {
-      // Final fallback: fire-and-forget request via image beacon.
-      const img = new Image();
-      img.referrerPolicy = 'no-referrer';
-      img.src = `${baseUrl}?${query}`;
-      return true;
+      if (!response.ok) {
+        return false;
+      }
+
+      const payload = await response.json().catch(() => null);
+      return Boolean(payload?.ok === true);
     } catch {
       return false;
     }
