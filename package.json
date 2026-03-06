@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "deploy:gh": "ng build --configuration production --base-href /birthday-surprise/ && npx angular-cli-ghpages --dir=dist/birthday-surprise/browser",
+    "deploy:gh": "ng build --configuration production --base-href /BdSubprize/ && npx angular-cli-ghpages --dir=dist/birthday-surprise/browser",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:birthday-surprise": "node dist/birthday-surprise/server/server.mjs"
