@@ -29,3 +29,16 @@
 	padding: 6px 10px;
 	max-width: min(72vw, 280px);
 }
+
+.app-version {
+	position: fixed;
+	left: 14px;
+	bottom: 14px;
+	z-index: 2200;
+	font-size: 12px;
+	font-weight: 800;
+	color: #fff;
+	background: rgba(17, 30, 56, 0.82);
+	border-radius: 999px;
+	padding: 6px 10px;
+}

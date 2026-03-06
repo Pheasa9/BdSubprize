@@ -1,18 +1,11 @@
 <div class="app-shell">
-  <audio #globalMusic loop preload="auto" (error)="onGlobalMusicError()"></audio>
-
-  <input
-    #musicPicker
-    type="file"
-    accept=".mp3,audio/mpeg,audio/*"
-    hidden
-    (change)="onMusicFilePicked($event)"
-  />
+  <audio #globalMusic loop preload="auto" [src]="sharedMusicSrc" (error)="onGlobalMusicError()"></audio>
 
   <button class="global-music-toggle" type="button" (click)="toggleGlobalMusic()">
     {{ musicPlaying ? 'Pause Music' : 'Play Music' }}
   </button>
   <div class="global-music-status" *ngIf="musicStatus">{{ musicStatus }}</div>
+  <div class="app-version">v{{ appVersion }}</div>
 
   <router-outlet></router-outlet>
 </div>

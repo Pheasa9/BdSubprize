@@ -13,12 +13,10 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   @ViewChild('globalMusic', { static: true })
   private globalMusicRef?: ElementRef<HTMLAudioElement>;
 
-  @ViewChild('musicPicker', { static: true })
-  private musicPickerRef?: ElementRef<HTMLInputElement>;
-
   protected musicPlaying = false;
   protected musicStatus = '';
-  private objectUrl: string | null = null;
+  protected readonly appVersion = '0.01';
+  protected readonly sharedMusicSrc = 'assets/music/s.MP4';
 
   constructor(@Inject(PLATFORM_ID) private readonly platformId: object) {}
 
@@ -26,7 +24,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     if (!isPlatformBrowser(this.platformId)) {
       return;
     }
-    this.musicStatus = 'Tap Play Music, then choose MP3 file';
+    this.musicStatus = 'Shared music mode: same song for all devices.';
   }
 
   ngOnDestroy(): void {
@@ -34,12 +32,6 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     if (audio) {
       audio.pause();
       audio.currentTime = 0;
-      audio.removeAttribute('src');
-      audio.load();
-    }
-    if (this.objectUrl) {
-      URL.revokeObjectURL(this.objectUrl);
-      this.objectUrl = null;
     }
     this.musicPlaying = false;
   }
@@ -51,12 +43,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     }
 
     if (audio.paused) {
-      const picker = this.musicPickerRef?.nativeElement;
-      if (!picker) {
-        return;
-      }
-      picker.value = '';
-      picker.click();
+      void this.playGlobalMusic();
       return;
     }
 
@@ -65,41 +52,25 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     this.musicStatus = 'Music paused';
   }
 
-  protected async onMusicFilePicked(event: Event): Promise<void> {
-    const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
-    if (!file) {
-      this.musicStatus = 'No file selected';
-      return;
-    }
-
+  private async playGlobalMusic(): Promise<void> {
     const audio = this.globalMusicRef?.nativeElement;
     if (!audio) {
       return;
     }
 
-    if (this.objectUrl) {
-      URL.revokeObjectURL(this.objectUrl);
-      this.objectUrl = null;
-    }
-
-    this.objectUrl = URL.createObjectURL(file);
-    audio.src = this.objectUrl;
-    audio.load();
-
     audio.volume = 0.38;
     try {
       await audio.play();
       this.musicPlaying = true;
-      this.musicStatus = `Playing: ${file.name}`;
+      this.musicStatus = 'Music playing';
     } catch {
       this.musicPlaying = false;
-      this.musicStatus = 'Cannot play selected file';
+      this.musicStatus = 'Cannot play shared file. Replace with MP3 and redeploy.';
     }
   }
 
   protected onGlobalMusicError(): void {
     this.musicPlaying = false;
-    this.musicStatus = 'Selected file is not playable';
+    this.musicStatus = 'Shared file is not playable. Upload valid MP3 then redeploy.';
   }
 }
