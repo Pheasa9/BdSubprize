@@ -193,6 +193,11 @@ export class TimelineComponent implements AfterViewInit, OnDestroy {
   private saDragStartY = 0;
   private saDragMoved = false;
   private saSuppressClickUntilTs = 0;
+  private saLastClickTs = 0;
+  private saHoldTimerId?: ReturnType<typeof setTimeout>;
+  private saHoldActive = false;
+  private readonly saDoubleClickGapMs = 340;
+  private readonly saHoldDelayMs = 380;
 
   private readonly onSaPointerMove = (event: PointerEvent) => {
     if (!this.saDragging || this.saDraggingPointerId !== event.pointerId || typeof window === 'undefined') {
@@ -206,6 +211,7 @@ export class TimelineComponent implements AfterViewInit, OnDestroy {
     const moveY = Math.abs(event.clientY - this.saDragStartY);
     if (moveX + moveY > 3) {
       this.saDragMoved = true;
+      this.clearSaHoldTimer();
     }
 
     const nextLeft = event.clientX - this.saDragOffsetX;
@@ -226,6 +232,12 @@ export class TimelineComponent implements AfterViewInit, OnDestroy {
     this.saDragging = false;
     this.saDraggingPointerId = null;
     this.pauseSaWalk(1000);
+    this.clearSaHoldTimer();
+
+    if (this.saHoldActive) {
+      this.saSuppressClickUntilTs = this.getNowTs() + 450;
+      this.saHoldActive = false;
+    }
 
     if (this.saDragMoved) {
       this.saSuppressClickUntilTs = this.getNowTs() + 250;
@@ -297,6 +309,7 @@ export class TimelineComponent implements AfterViewInit, OnDestroy {
     if (typeof window !== 'undefined') {
       window.removeEventListener('focus', this.onSaWindowFocus);
     }
+    this.clearSaHoldTimer();
     this.detachSaDragListeners();
     if (this.previewMarker && this.map) {
       this.map.removeLayer(this.previewMarker);
@@ -1488,9 +1501,18 @@ export class TimelineComponent implements AfterViewInit, OnDestroy {
   }
 
   protected onSaClick(): void {
-    if (this.getNowTs() < this.saSuppressClickUntilTs) {
+    const now = this.getNowTs();
+    if (now < this.saSuppressClickUntilTs) {
       return;
     }
+
+    if (this.saLastClickTs > 0 && now - this.saLastClickTs <= this.saDoubleClickGapMs) {
+      this.saLastClickTs = 0;
+      this.openSaHelpMenu();
+      return;
+    }
+
+    this.saLastClickTs = now;
 
     this.pauseSaWalk(1000);
     this.triggerSaMessage();
@@ -1501,7 +1523,6 @@ export class TimelineComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    event.preventDefault();
     this.saDragging = true;
     this.saDraggingPointerId = event.pointerId;
     this.saDragOffsetX = event.clientX - this.saLeftPx;
@@ -1509,9 +1530,10 @@ export class TimelineComponent implements AfterViewInit, OnDestroy {
     this.saDragStartX = event.clientX;
     this.saDragStartY = event.clientY;
     this.saDragMoved = false;
+    this.saHoldActive = false;
 
     this.pauseSaWalk(1000);
-    this.triggerSaHoldMessage();
+    this.startSaHoldTimer();
     this.attachSaDragListeners();
   }
 
@@ -1678,6 +1700,24 @@ export class TimelineComponent implements AfterViewInit, OnDestroy {
     this.showSaBubble = true;
     // Keep Sa still while this hold message is being spoken.
     this.pauseSaForMessage(this.saCurrentMessage, 1200);
+  }
+
+  private startSaHoldTimer(): void {
+    this.clearSaHoldTimer();
+    this.saHoldTimerId = setTimeout(() => {
+      if (!this.saDragging || this.saDragMoved) {
+        return;
+      }
+      this.saHoldActive = true;
+      this.triggerSaHoldMessage();
+    }, this.saHoldDelayMs);
+  }
+
+  private clearSaHoldTimer(): void {
+    if (this.saHoldTimerId) {
+      clearTimeout(this.saHoldTimerId);
+      this.saHoldTimerId = undefined;
+    }
   }
 
   private attachSaDragListeners(): void {

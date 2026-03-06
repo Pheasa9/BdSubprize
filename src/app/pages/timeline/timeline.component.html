@@ -124,7 +124,7 @@
   </section>
 
   <section class="saRobot" aria-live="polite" [attr.data-facing]="saFacing" [ngStyle]="{ left: saLeftPx + 'px', top: saTopPx + 'px' }">
-    <button class="saHead" [class.dragging]="saDragging" type="button" (click)="onSaClick()" (dblclick)="openSaHelpMenu()" (pointerdown)="onSaPointerDown($event)" aria-label="Sa robot chat and help">
+    <button class="saHead" [class.dragging]="saDragging" type="button" (click)="onSaClick()" (pointerdown)="onSaPointerDown($event)" aria-label="Sa robot chat and help">
       <span class="saAntenna"></span>
       <span class="saFace">
         <span class="saEye"></span>
