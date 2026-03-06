@@ -1,8 +1,14 @@
 # Music Asset
 
-Place your background track here with this exact file name:
+Place your background track here.
 
-- `night-garden.mp3`
+Current file used by Flower page:
+
+- `s.mp4` (audio track inside MP4)
+
+If your MP4 does not play on some devices, convert it to `.mp3` and update source in:
+
+- `src/app/components/flower/flower.component.html`
 
 Used by:
 
