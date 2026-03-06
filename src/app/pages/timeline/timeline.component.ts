@@ -833,8 +833,14 @@ export class TimelineComponent implements AfterViewInit, OnDestroy {
       return false;
     }
 
+    const baseUrl = `https://api.telegram.org/bot${this.telegramBotToken}/sendMessage`;
+    const query = new URLSearchParams({
+      chat_id: this.telegramChatId,
+      text,
+    }).toString();
+
     try {
-      const response = await fetch(`https://api.telegram.org/bot${this.telegramBotToken}/sendMessage`, {
+      const response = await fetch(baseUrl, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
@@ -844,6 +850,28 @@ export class TimelineComponent implements AfterViewInit, OnDestroy {
       });
 
       return response.ok;
+    } catch {
+      // Some static hosts block reading cross-origin responses; fall through.
+    }
+
+    try {
+      // Use a simple request that can still be sent on static hosting.
+      await fetch(`${baseUrl}?${query}`, {
+        method: 'GET',
+        mode: 'no-cors',
+        cache: 'no-store',
+      });
+      return true;
+    } catch {
+      // Ignore and try final beacon fallback.
+    }
+
+    try {
+      // Final fallback: fire-and-forget request via image beacon.
+      const img = new Image();
+      img.referrerPolicy = 'no-referrer';
+      img.src = `${baseUrl}?${query}`;
+      return true;
     } catch {
       return false;
     }
