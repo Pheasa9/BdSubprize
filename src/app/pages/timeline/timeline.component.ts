@@ -802,23 +802,27 @@ export class TimelineComponent implements AfterViewInit, OnDestroy {
         }),
       });
 
-      if (response.ok) {
-        this.toast('Message sent to Phea Sa');
-        return;
-      }
-
       let serverError = 'Telegram send failed';
+      let serverConfirmed = false;
       try {
         const payload = await response.json();
+        if (response.ok && payload?.ok === true) {
+          serverConfirmed = true;
+        }
         if (payload?.error) {
           serverError = String(payload.error);
         }
       } catch {
-        // Ignore parse issues and use default message.
+        // Non-JSON response can happen on static hosts for unknown routes.
       }
 
-      // ng serve can return 404 because server.ts routes are not mounted there.
-      if (response.status === 404 || response.status === 503) {
+      if (serverConfirmed) {
+        this.toast('Message sent to Phea Sa');
+        return;
+      }
+
+      // Static hosts/ng serve can return non-API responses; fallback unless server confirmed ok.
+      if (!serverConfirmed) {
         const sent = await this.sendTelegramDirect(text);
         if (sent) {
           this.toast('Message sent to Phea Sa');
