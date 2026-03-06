@@ -11,7 +11,7 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent implements AfterViewInit, OnDestroy {
   @ViewChild('globalMusic', { static: true })
-  private globalMusicRef?: ElementRef<HTMLAudioElement>;
+  private globalMusicRef?: ElementRef<HTMLMediaElement>;
 
   protected musicPlaying = false;
   private removeStartListeners: Array<() => void> = [];
@@ -64,6 +64,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     }
 
     audio.volume = 0.38;
+    audio.muted = false;
     try {
       await audio.play();
       this.musicPlaying = true;

@@ -1,7 +1,8 @@
 <div class="app-shell">
-  <audio #globalMusic loop preload="auto">
-    <source src="assets/music/s.MP4" type="audio/mp4" />
-  </audio>
+  <video #globalMusic loop preload="auto" playsinline aria-hidden="true" style="display:none">
+    <source src="assets/music/s.MP4" type="video/mp4" />
+    <source src="assets/music/s.MP4" />
+  </video>
 
   <button class="global-music-toggle" type="button" (click)="toggleGlobalMusic()">
     {{ musicPlaying ? 'Pause Music' : 'Play Music' }}
