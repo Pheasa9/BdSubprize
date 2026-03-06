@@ -1,0 +1,83 @@
+.bg {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 22px;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(900px 500px at 20% 10%, rgba(255, 179, 217, .55), transparent 55%),
+    radial-gradient(900px 500px at 90% 30%, rgba(170, 120, 255, .35), transparent 55%),
+    radial-gradient(circle at top, #ffb3d9, #120412 70%);
+}
+
+.card {
+  width: min(620px, 100%);
+  border-radius: 26px;
+  background: rgba(255, 255, 255, .10);
+  border: 1px solid rgba(255, 255, 255, .22);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 20px 70px rgba(0, 0, 0, .45);
+  padding: 26px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.title {
+  margin: 0 0 8px;
+  font-size: clamp(34px, 6vw, 58px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  animation: pop 900ms ease both;
+}
+@keyframes pop {
+  from { opacity: 0; transform: translateY(10px) scale(.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.name { text-shadow: 0 0 24px rgba(255, 255, 255, .35); }
+.sub { margin: 0 0 16px; opacity: .92; }
+
+.btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.btn {
+  text-decoration: none;
+  background: #fff;
+  color: #160316;
+  padding: 12px 16px;
+  border-radius: 999px;
+  font-weight: 900;
+  transition: transform .18s ease;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+.btn:hover { transform: translateY(-2px); }
+
+.btn.ghost {
+  background: rgba(255,255,255,.14);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.25);
+  box-shadow: none;
+}
+
+/* petals */
+.petals { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.petal {
+  position: absolute;
+  top: -40px;
+  background: rgba(255, 210, 235, .95);
+  border-radius: 0 100% 0 100%;
+  transform: rotate(25deg);
+  filter: drop-shadow(0 10px 16px rgba(0,0,0,.22));
+  animation: fall 7s linear infinite;
+}
+@keyframes fall {
+  0%   { transform: translateY(-70px) rotate(0deg); opacity: 0; }
+  12%  { opacity: 1; }
+  100% { transform: translateY(120vh) rotate(var(--spin)); opacity: .12; }
+} 

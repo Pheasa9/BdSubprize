@@ -1,0 +1,161 @@
+<div class="map-page">
+  <div class="app">
+    <aside class="panel sidebar">
+      <div class="hero">
+        <h1 class="title">Cartoon Trip Goal Map</h1>
+        <p class="subtitle">
+          Pick cute goals, preview pins, and build your dream trip route across Cambodia.
+        </p>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="k">Total</div>
+            <div class="v">{{ totalCount }}</div>
+          </div>
+          <div class="stat">
+            <div class="k">Visited</div>
+            <div class="v">{{ visitedCount }}</div>
+          </div>
+          <div class="stat">
+            <div class="k">Not yet</div>
+            <div class="v">{{ todoCount }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="row add-goal-row">
+          <div class="goalSearchBox">
+            <input
+              class="input"
+              placeholder="Search place, filter list, and add as goal..."
+              [value]="goalSearchTerm"
+              (input)="onGoalSearch($any($event.target).value)"
+              (keyup.enter)="addGoalFromSearch()"
+            />
+
+            <div class="suggestions" *ngIf="goalSearchAttempted || goalSuggestions.length || loadingGoalSuggestions">
+              <div class="suggestion loading" *ngIf="loadingGoalSuggestions">Searching places...</div>
+              <div class="suggestion loading" *ngIf="!loadingGoalSuggestions && goalSuggestions.length === 0">No suggestions found</div>
+
+              <button
+                class="suggestion"
+                type="button"
+                *ngFor="let item of goalSuggestions"
+                (click)="chooseGoalSuggestion(item)"
+              >
+                <span class="s-name">{{ item.name }}</span>
+                <span class="s-query">{{ item.query }}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="row top-row">
+          <div class="seg">
+            <button class="chip" [attr.data-active]="filter === 'all'" (click)="setFilter('all')">All</button>
+            <button class="chip" [attr.data-active]="filter === 'visited'" (click)="setFilter('visited')">Visited</button>
+            <button class="chip" [attr.data-active]="filter === 'todo'" (click)="setFilter('todo')">Not yet</button>
+          </div>
+        </div>
+
+        <div class="row">
+          <button class="btn ghost" (click)="toggleGoalList()">
+            {{ showGoalList ? 'Hide goal places' : 'View goal places' }}
+          </button>
+        </div>
+      </div>
+
+      <div class="footer">
+        Drag a goal pin to adjust exact location. Changes are saved on your browser automatically.
+      </div>
+    </aside>
+
+    <main class="panel mapWrap">
+      <div class="mapHeader">
+        <div class="pill"><b>Tip:</b> Use two fingers to pinch zoom on mobile or use + / - buttons, then click goal list items to fly on map.</div>
+        <div class="legend">
+          <div class="key"><span class="pin ok"></span>Visited</div>
+          <div class="key"><span class="pin todo"></span>Not yet</div>
+        </div>
+      </div>
+
+      <div #mapHost class="mapHost"></div>
+
+      <section class="mapGoalList" *ngIf="showGoalList">
+        <div class="mapGoalHead">
+          <span>Goal Places ({{ filteredPlaces.length }})</span>
+          <button class="closeGoalBtn" type="button" (click)="closeGoalList()" aria-label="Close goal list">x</button>
+        </div>
+        <div class="mapGoalBody">
+          <button
+            class="mapGoalItem"
+            *ngFor="let p of filteredPlaces; trackBy: trackById"
+            (click)="selectGoalFromList(p)"
+          >
+            <span class="dot" [class.ok]="p.status === 'visited'" [class.todo]="p.status === 'todo'"></span>
+            <span class="meta">
+              <span class="name">{{ p.name }}</span>
+              <span class="note">{{ p.note }}</span>
+            </span>
+          </button>
+        </div>
+      </section>
+
+      <div class="loading" *ngIf="loading">{{ loadingText }}</div>
+    </main>
+  </div>
+
+  <section class="tutorialBackdrop" *ngIf="showTutorial">
+    <div class="tutorialCard">
+      <h2>How To Use This Map</h2>
+      <ol>
+        <li>Type place name in search (Khmer or English).</li>
+        <li>Choose a suggestion to preview marker on map.</li>
+        <li>Click preview marker and confirm to save as goal.</li>
+        <li>Use <b>Brab Pheasa</b> in popup to send message + location.</li>
+        <li>Open <b>View goal places</b> to jump quickly between saved goals.</li>
+      </ol>
+
+      <div class="tutorialCheck">This guide will show again when you restart/open this page.</div>
+
+      <button class="tutorialBtn" type="button" (click)="closeTutorial()">Got it</button>
+    </div>
+  </section>
+
+  <section class="saRobot" aria-live="polite" [attr.data-facing]="saFacing" [ngStyle]="{ left: saLeftPx + 'px', top: saTopPx + 'px' }">
+    <button class="saHead" [class.dragging]="saDragging" type="button" (click)="onSaClick()" (dblclick)="openSaHelpMenu()" (pointerdown)="onSaPointerDown($event)" aria-label="Sa robot chat and help">
+      <span class="saAntenna"></span>
+      <span class="saFace">
+        <span class="saEye"></span>
+        <span class="saEye"></span>
+      </span>
+      <span class="saMouth"></span>
+      <span class="saBody"></span>
+    </button>
+    <div class="saBubble" *ngIf="showSaBubble">
+      <div class="saName">Sa</div>
+      <p>{{ saCurrentMessage }}</p>
+      <div class="saGuideActions" *ngIf="saGuideActive">
+        <div class="saGuideTitle">{{ saGuideTitle }}</div>
+        <div class="saGuideMeta">Step {{ saGuideStepIndex + 1 }} / {{ saGuideTotalSteps }}</div>
+        <div class="saGuideBtns">
+          <button type="button" (click)="nextSaGuideStep()">Next</button>
+          <button type="button" class="ghost" (click)="closeSaGuide()">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="saHelpMenu" *ngIf="showSaHelpMenu">
+      <div class="saHelpTitle">Ask Sa about this page</div>
+      <button
+        class="saQuestion"
+        type="button"
+        *ngFor="let q of saHelpQuestions"
+        (click)="startSaGuide(q.id)">
+        {{ q.title }}
+      </button>
+      <button class="saCancel" type="button" (click)="cancelSaHelpMenu()">Cancel</button>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,64 @@
+<div class="gallery-container">
+  <!-- Background Petals -->
+  <div class="gallery-petals"></div>
+
+  <!-- Background Glow -->
+  <div class="gallery-glow"></div>
+
+  <!-- Gallery Content -->
+  <div class="gallery-content card">
+    <h1 class="gallery-title glow-text">🖼️ Our Memories 🖼️</h1>
+
+    <!-- Image Slider -->
+    <div 
+      class="slider-wrapper"
+      (touchstart)="onTouchStart($event)"
+      (touchend)="onTouchEnd($event)">
+      
+      <div class="slider">
+        <div 
+          *ngFor="let image of images; let i = index"
+          class="slider-item"
+          [ngClass]="getImagePosition(i)">
+          <div class="image-frame">
+            <img 
+              [src]="image.src" 
+              [alt]="'Memory ' + image.id"
+              loading="lazy">
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <button class="slider-btn prev-btn" (click)="previousImage()" aria-label="Previous image">
+        ❮
+      </button>
+      <button class="slider-btn next-btn" (click)="nextImage()" aria-label="Next image">
+        ❯
+      </button>
+    </div>
+
+    <!-- Image Counter -->
+    <div class="image-counter">
+      {{ currentIndex + 1 }} / {{ images.length }}
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons gap-20">
+      <button class="btn" (click)="goToFlower()">
+        🌹 Flower Glory
+      </button>
+      <button class="btn" (click)="goToNote()">
+        💌 Love Note
+      </button>
+      <button class="btn btn-outline" (click)="goHome()">
+        🏠 Home
+      </button>
+    </div>
+
+    <!-- Instructions -->
+    <p class="instructions">
+      💡 Use arrow keys or swipe to navigate
+    </p>
+  </div>
+</div>

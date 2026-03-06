@@ -14,6 +14,65 @@ const browserDistFolder = resolve(serverDistFolder, '../browser');
 const app = express();
 const angularApp = new AngularNodeAppEngine();
 
+app.use(express.json({ limit: '256kb' }));
+
+app.post('/api/telegram/send', async (req, res) => {
+  const botToken = process.env['TELEGRAM_BOT_TOKEN'];
+  const chatId = process.env['TELEGRAM_CHAT_ID'];
+
+  if (!botToken || !chatId) {
+    res.status(503).json({ ok: false, error: 'Telegram is not configured on server.' });
+    return;
+  }
+
+  const body = (req.body || {}) as {
+    customMessage?: string;
+    name?: string;
+    lat?: number;
+    lng?: number;
+    mapUrl?: string;
+  };
+
+  if (typeof body.lat !== 'number' || typeof body.lng !== 'number' || !body.name) {
+    res.status(400).json({ ok: false, error: 'Invalid location payload.' });
+    return;
+  }
+
+  const message = [
+    'Message from sokyaBD',
+    `Message: ${String(body.customMessage || '-').trim() || '-'}`,
+    `Location: ${body.name}`,
+    `Map: ${body.mapUrl || `https://maps.google.com/?q=${body.lat},${body.lng}`}`,
+  ].join('\n');
+
+  try {
+    const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: message,
+      }),
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      let hint = '';
+      if (/chat not found/i.test(errText)) {
+        hint = ' Hint: open Telegram and send /start to your bot, then retry.';
+      } else if (/forbidden/i.test(errText)) {
+        hint = ' Hint: bot may be blocked by the chat/user.';
+      }
+      res.status(502).json({ ok: false, error: `Telegram API error: ${errText}${hint}` });
+      return;
+    }
+
+    res.json({ ok: true });
+  } catch (error) {
+    res.status(500).json({ ok: false, error: (error as Error).message });
+  }
+});
+
 /**
  * Example Express Rest API endpoints can be defined here.
  * Uncomment and define endpoints as necessary.

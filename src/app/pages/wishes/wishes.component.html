@@ -1,0 +1,26 @@
+<div class="wishes-page">
+  <div class="ambient" aria-hidden="true">
+    <span class="star" *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12]"></span>
+  </div>
+
+  <main class="wishes-card card" role="main">
+    <p class="eyebrow">More For You</p>
+    <h1>Birthday Wishes Wall</h1>
+    <p class="subtitle">Because one surprise is never enough for someone this special.</p>
+
+    <section class="wish-grid">
+      <article
+        class="wish"
+        *ngFor="let wish of wishes; trackBy: trackById"
+      >
+        <h2>{{ wish.title }}</h2>
+        <p>{{ wish.text }}</p>
+      </article>
+    </section>
+
+    <div class="actions">
+      <button class="btn" (click)="goToGallery()">Open Gallery</button>
+      <button class="btn btn-outline" (click)="goHome()">Back Home</button>
+    </div>
+  </main>
+</div>

@@ -1,0 +1,28 @@
+<div class="bg">
+  <div class="petals" aria-hidden="true">
+    <span
+      *ngFor="let p of petals"
+      class="petal"
+      [style.left.%]="p.left"
+      [style.animationDelay.s]="p.delay"
+      [style.width.px]="p.size"
+      [style.height.px]="p.size"
+      [style.--spin.deg]="p.spin"
+    ></span>
+  </div>
+
+  <div class="card">
+    <h1 class="title">
+      Happy Birthday,
+      <span class="name">{{ girlName }}</span> 💖
+    </h1>
+
+    <p class="sub">I made this little surprise website for you ✨</p>
+
+    <div class="btns">
+      <a class="btn" routerLink="/flower">🌸 Flower Glory</a>
+      <a class="btn" routerLink="/gallery">🖼️ Our Gallery</a>
+      <a class="btn ghost" routerLink="/note">💌 My Note</a>
+    </div>
+  </div>
+</div>

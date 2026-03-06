@@ -1,0 +1,17 @@
+<div class="flower-canvas-page">
+  <canvas #flowerCanvas></canvas>
+  <audio #bgMusic loop preload="auto">
+    <source src="assets/music/night-garden.mp3" type="audio/mpeg" />
+  </audio>
+
+  <button class="music-toggle" type="button" (click)="toggleMusic()">
+    {{ isMusicPlaying ? 'Pause Music' : 'Play Music' }}
+  </button>
+
+  <button class="back-text" type="button" (click)="goHome()" aria-label="Back to Home">
+    back
+  </button>
+
+  <div class="fx" aria-hidden="true"></div>
+  <div class="hint">Just for my beautiful girlfriend, created by: <span class="smos">SMOS</span>.</div>
+</div>

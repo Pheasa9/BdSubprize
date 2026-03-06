@@ -1,1 +1,403 @@
-/* You can add global styles to this file, and also import other style files */
+/* ===========================
+   GLOBAL STYLES - BIRTHDAY SURPRISE
+   =========================== */
+
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  color: #fff;
+  overflow-x: hidden;
+}
+
+/* ===========================
+   COLOR PALETTE
+   =========================== */
+$primary-pink: #ff6fae;
+$primary-purple: #8b5cff;
+$primary-gold: #ffd37d;
+$dark-bg: #0f0c29;
+$light-text: #ffffff;
+$semi-transparent: rgba(255, 255, 255, 0.1);
+
+/* ===========================
+   TYPOGRAPHY
+   =========================== */
+h1 {
+  font-size: clamp(1.5rem, 5vw, 3.5rem);
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+h2 {
+  font-size: clamp(1.25rem, 4vw, 2.5rem);
+  font-weight: 600;
+}
+
+p {
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  line-height: 1.6;
+}
+
+/* ===========================
+   REUSABLE CONTAINER
+   =========================== */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+
+  @media (max-width: 768px) {
+    padding: 15px;
+  }
+}
+
+/* ===========================
+   BUTTON STYLES
+   =========================== */
+.btn {
+  padding: 12px 28px;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  border: 2px solid transparent;
+
+  /* Default button style with glow */
+  background: linear-gradient(135deg, $primary-pink, $primary-purple);
+  color: white;
+  box-shadow: 0 0 20px rgba(255, 111, 174, 0.4);
+
+  &:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 0 35px rgba(255, 111, 174, 0.8),
+                0 5px 20px rgba(255, 111, 174, 0.6);
+  }
+
+  &:active {
+    transform: translateY(-1px) scale(1.02);
+  }
+
+  /* Outline variant */
+  &.btn-outline {
+    background: transparent;
+    border: 2px solid $primary-pink;
+    color: $primary-pink;
+    box-shadow: 0 0 15px rgba(255, 111, 174, 0.2);
+
+    &:hover {
+      box-shadow: 0 0 30px rgba(255, 111, 174, 0.6);
+      background: rgba(255, 111, 174, 0.1);
+    }
+  }
+
+  /* Gold variant */
+  &.btn-gold {
+    background: linear-gradient(135deg, $primary-gold, #ffc157);
+    color: #333;
+    box-shadow: 0 0 20px rgba(255, 211, 125, 0.4);
+
+    &:hover {
+      box-shadow: 0 0 35px rgba(255, 211, 125, 0.8);
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+}
+
+/* ===========================
+   CARD STYLES
+   =========================== */
+.card {
+  padding: 40px;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37),
+              0 0 30px rgba(255, 111, 174, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  @media (max-width: 768px) {
+    padding: 25px 20px;
+    border-radius: 25px;
+  }
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 20px;
+}
+
+/* ===========================
+   GLOW EFFECTS
+   =========================== */
+.glow {
+  box-shadow: 0 0 20px rgba(255, 111, 174, 0.5),
+              0 0 40px rgba(139, 92, 255, 0.3);
+}
+
+.glow-gold {
+  box-shadow: 0 0 20px rgba(255, 211, 125, 0.5),
+              0 0 40px rgba(255, 211, 125, 0.3);
+}
+
+.glow-text {
+  color: #ff6fae;
+  text-shadow: 0 0 10px rgba(255, 111, 174, 0.8),
+               0 0 20px rgba(139, 92, 255, 0.6);
+}
+
+/* ===========================
+   ANIMATIONS
+   =========================== */
+
+/* Petal falling animation */
+@keyframes petal-fall {
+  to {
+    transform: translateY(100vh) rotateZ(360deg);
+    opacity: 0;
+  }
+}
+
+/* Sparkle animation */
+@keyframes sparkle-float {
+  0%, 100% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(var(--tx), var(--ty));
+  }
+}
+
+/* Flower bloom animation */
+@keyframes flower-bloom {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Floating up and down */
+@keyframes float-up-down {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+/* Glow pulsing effect */
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 111, 174, 0.4),
+                0 0 40px rgba(139, 92, 255, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(255, 111, 174, 0.8),
+                0 0 60px rgba(139, 92, 255, 0.4);
+  }
+}
+
+/* Fade in animation */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Text glow animation */
+@keyframes text-glow {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(255, 111, 174, 0.6),
+                 0 0 20px rgba(139, 92, 255, 0.4);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(255, 111, 174, 0.9),
+                 0 0 40px rgba(139, 92, 255, 0.6);
+  }
+}
+
+/* Heart pulsing */
+@keyframes heart-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.1);
+  }
+  50% {
+    transform: scale(1);
+  }
+  75% {
+    transform: scale(1.08);
+  }
+}
+
+/* Slide animation for gallery */
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Utility animation classes */
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out forwards;
+}
+
+.animate-float {
+  animation: float-up-down 3s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+.animate-heart {
+  animation: heart-pulse 0.8s ease-in-out infinite;
+}
+
+/* ===========================
+   PARTICLES
+   =========================== */
+.particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.particle {
+  position: absolute;
+  pointer-events: none;
+}
+
+/* ===========================
+   PETALS
+   =========================== */
+.petals {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.petal {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* ===========================
+   RESPONSIVE ADJUSTMENTS
+   =========================== */
+@media (max-width: 768px) {
+  h1 {
+    margin-bottom: 15px;
+  }
+
+  h2 {
+    margin-bottom: 15px;
+  }
+
+  p {
+    margin-bottom: 15px;
+  }
+
+  .card {
+    padding: 20px;
+  }
+}
+
+/* ===========================
+   UTILITY CLASSES
+   =========================== */
+.text-center {
+  text-align: center;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.mt-40 {
+  margin-top: 40px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+.mb-40 {
+  margin-bottom: 40px;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.gap-20 {
+  gap: 20px;
+}
+
+.gap-10 {
+  gap: 10px;
+}
+button { font: inherit; }
+a { color: inherit; }

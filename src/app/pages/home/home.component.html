@@ -1,0 +1,59 @@
+<div class="home-page">
+  <div class="atmosphere" aria-hidden="true">
+    <div class="aurora"></div>
+    <div class="mesh"></div>
+
+    <div class="sparkle-layer">
+      <span
+        *ngFor="let sparkle of sparkles; trackBy: trackById"
+        class="sparkle"
+        [ngStyle]="getSparkleStyle(sparkle)"
+      ></span>
+    </div>
+
+    <div class="firefly-layer">
+      <span
+        *ngFor="let firefly of fireflies; trackBy: trackById"
+        class="firefly"
+        [ngStyle]="getFireflyStyle(firefly)"
+      ></span>
+    </div>
+
+    <div class="firework-layer">
+      <span
+        *ngFor="let firework of fireworks; trackBy: trackById"
+        class="firework"
+        [ngStyle]="getFireworkStyle(firework)"
+      ></span>
+    </div>
+
+    <div class="petals-layer">
+      <span
+        *ngFor="let petal of petals; trackBy: trackById"
+        class="petal"
+        [ngStyle]="getPetalStyle(petal)"
+      >
+        🌸
+      </span>
+    </div>
+  </div>
+
+  <main class="hero-card card" role="main">
+    <p class="eyebrow">Birthday Surprise</p>
+    <h1>
+      Happy Birthday,
+      <span>{{ birthdayName }}</span>
+    </h1>
+    <p class="subtitle">
+      Tonight is made of light, petals, and memories. Pick your path and let the celebration unfold.
+    </p>
+
+    <div class="buttons-container">
+      <button class="btn" (click)="goToFlower()">Enter Flower Glory</button>
+      <button class="btn" (click)="goToGallery()">Open Gallery</button>
+      <button class="btn" (click)="goToWishes()">Open Wishes Wall</button>
+      <button class="btn" (click)="goToTimeline()">Trip Place with Besdong</button>
+      <button class="btn btn-outline" (click)="goToNote()">Read Love Note</button>
+    </div>
+  </main>
+</div>

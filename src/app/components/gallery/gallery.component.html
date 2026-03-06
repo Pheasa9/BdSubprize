@@ -1,0 +1,48 @@
+<div class="gallery-container">
+  <div class="background"></div>
+
+  <div class="content">
+    <h1 class="title">Our Gallery</h1>
+
+    <div class="slider-wrapper">
+      <button class="arrow prev" (click)="prev()" aria-label="Previous image">
+        <span>❮</span>
+      </button>
+
+      <div class="slider">
+        <img 
+          [src]="images[currentIndex]" 
+          [alt]="'Image ' + (currentIndex + 1)"
+          class="slide-image"
+        />
+        <div class="image-placeholder">
+          Image {{ currentIndex + 1 }}
+        </div>
+      </div>
+
+      <button class="arrow next" (click)="next()" aria-label="Next image">
+        <span>❯</span>
+      </button>
+    </div>
+
+    <div class="dots">
+      <button 
+        *ngFor="let i of [0, 1, 2, 3, 4, 5, 6]"
+        class="dot"
+        [class.active]="i === currentIndex"
+        (click)="currentIndex = i"
+        [attr.aria-label]="'Go to image ' + (i + 1)"
+      ></button>
+    </div>
+
+    <div class="counter">
+      {{ currentIndex + 1 }} / {{ images.length }}
+    </div>
+
+    <p class="hint">Use arrow keys or buttons to navigate</p>
+
+    <button class="btn-home" (click)="navigateTo('home')">
+      <span>← Back to Home</span>
+    </button>
+  </div>
+</div>
