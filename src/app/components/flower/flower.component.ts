@@ -21,12 +21,8 @@ export class FlowerComponent implements AfterViewInit, OnDestroy {
   @ViewChild('flowerCanvas', { static: true })
   private flowerCanvasRef?: ElementRef<HTMLCanvasElement>;
 
-  @ViewChild('bgMusic', { static: true })
-  private bgMusicRef?: ElementRef<HTMLAudioElement>;
-
   private animationFrameId: number | null = null;
   private removeListeners: Array<() => void> = [];
-  protected isMusicPlaying = false;
 
   constructor(
     @Inject(PLATFORM_ID) private readonly platformId: object,
@@ -56,37 +52,6 @@ export class FlowerComponent implements AfterViewInit, OnDestroy {
       removeListener();
     }
     this.removeListeners = [];
-
-    const audio = this.bgMusicRef?.nativeElement;
-    if (audio) {
-      audio.pause();
-      audio.currentTime = 0;
-    }
-    this.isMusicPlaying = false;
-  }
-
-  protected toggleMusic(): void {
-    if (!isPlatformBrowser(this.platformId)) {
-      return;
-    }
-
-    const audio = this.bgMusicRef?.nativeElement;
-    if (!audio) {
-      return;
-    }
-
-    if (audio.paused) {
-      audio.volume = 0.42;
-      void audio.play().then(() => {
-        this.isMusicPlaying = true;
-      }).catch(() => {
-        this.isMusicPlaying = false;
-      });
-      return;
-    }
-
-    audio.pause();
-    this.isMusicPlaying = false;
   }
 
   private startScene(): void {

@@ -1,3 +1,11 @@
 <div class="app-shell">
+  <audio #globalMusic loop preload="auto">
+    <source src="assets/music/s.MP4" type="audio/mp4" />
+  </audio>
+
+  <button class="global-music-toggle" type="button" (click)="toggleGlobalMusic()">
+    {{ musicPlaying ? 'Pause Music' : 'Play Music' }}
+  </button>
+
   <router-outlet></router-outlet>
 </div>

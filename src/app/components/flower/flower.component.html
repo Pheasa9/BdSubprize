@@ -1,12 +1,5 @@
 <div class="flower-canvas-page">
   <canvas #flowerCanvas></canvas>
-  <audio #bgMusic loop preload="auto">
-    <source src="assets/music/s.MP4" type="audio/mp4" />
-  </audio>
-
-  <button class="music-toggle" type="button" (click)="toggleMusic()">
-    {{ isMusicPlaying ? 'Pause Music' : 'Play Music' }}
-  </button>
 
   <button class="back-text" type="button" (click)="goHome()" aria-label="Back to Home">
     back
