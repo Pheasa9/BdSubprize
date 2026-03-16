@@ -109,7 +109,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
   protected musicPlaying = false;
   protected musicStatus = 'Shared music mode: same song for all devices.';
-  protected readonly appVersion = '0.01';
+  protected readonly appVersion = '0.002';
   protected readonly sharedMusicSrc = 'assets/music/s.MP4';
   protected showIntro = true;
   protected introStarted = false;
