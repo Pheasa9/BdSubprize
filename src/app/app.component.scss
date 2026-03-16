@@ -102,9 +102,21 @@
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 38%;
-  height: 32%;
+  bottom: 34%;
+  height: 44%;
   z-index: 20;
+  overflow: visible;
+}
+
+.mountains::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 14%;
+  background: linear-gradient(to top, var(--grass-mid) 0%, rgba(21, 33, 68, 0) 100%);
+  pointer-events: none;
 }
 
 .mountain {
