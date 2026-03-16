@@ -1,0 +1,33 @@
+.matrix-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: linear-gradient(to bottom, #120012, #050008 45%, #000000);
+  z-index: 1;
+}
+.matrix-col {
+  position: absolute;
+  top: 0;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 18px;
+  color: transparent;
+  background: linear-gradient(to bottom, #f9a8d4, #f472b6, #be185d);
+  -webkit-background-clip: text;
+  background-clip: text;
+  opacity: 0.9;
+  animation: matrix-fall linear infinite;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transition: filter 0.3s, opacity 0.3s;
+}
+@media (min-width: 768px) {
+  .matrix-col {
+    font-size: 22px;
+    line-height: 22px;
+  }
+}
+@keyframes matrix-fall {
+  0% { top: -120%; }
+  100% { top: 120%; }
+}

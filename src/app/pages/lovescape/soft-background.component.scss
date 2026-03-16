@@ -1,0 +1,15 @@
+.soft-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: radial-gradient(circle at top,#33446d,transparent 40%),linear-gradient(180deg,#242d4a,#1a2138);
+  z-index: 1;
+}
+.soft-dot {
+  position: absolute;
+  width: 7rem;
+  height: 7rem;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  filter: blur(32px);
+}

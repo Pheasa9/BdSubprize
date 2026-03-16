@@ -1,0 +1,37 @@
+<div class="lovescape-root" [class.black-screen]="stage === 'black'" [class.fading]="stage === 'fading'">
+  <!-- Animated backgrounds -->
+  <ng-container *ngIf="stage === 'intro' || stage === 'label'">
+    <app-matrix-background></app-matrix-background>
+  </ng-container>
+
+  <main class="lovescape-main">
+    <ng-container *ngIf="stage === 'intro' || (stage === 'label' && !showLabel)">
+      <ng-container *ngIf="showIntroSequence; else startScreen">
+        <app-intro-sequence (sokyadone)="onSokyaDone()"></app-intro-sequence>
+      </ng-container>
+
+      <ng-template #startScreen>
+        <div class="lovescape-start" *ngIf="stage === 'intro'">
+          <button class="lovescape-start-btn" type="button" (click)="startIntro()">
+            Start Love Escape
+          </button>
+        </div>
+      </ng-template>
+    </ng-container>
+
+    <!-- Show label after 2 seconds when SOKYA finishes -->
+    <ng-container *ngIf="stage === 'label' && showLabel">
+      <button class="flower-label" type="button" (click)="navigateToFlower()">
+        <span class="flower-label-text">See my flower for you</span>
+      </button>
+    </ng-container>
+
+    <ng-template #blackScreen>
+      <div class="black-screen">
+        <button class="flower-label" type="button" (click)="navigateToFlower()">
+          <span class="flower-label-text">See my flower for you</span>
+        </button>
+      </div>
+    </ng-template>
+  </main>
+</div>
