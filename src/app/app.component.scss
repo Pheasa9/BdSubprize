@@ -441,7 +441,7 @@
   right: 0;
   bottom: 11%;
   height: 22%;
-  z-index: 6;
+  z-index: 50;
   pointer-events: none;
 }
 
@@ -453,7 +453,7 @@
   transform: translate(-50%, -50%) scale(0.95);
   width: 260px;
   height: 120px;
-  z-index: 12;
+  z-index: 55;
 }
 
 .kid {
@@ -893,7 +893,7 @@
   bottom: 4px;
   width: 124px;
   height: 72px;
-  z-index: 6;
+  z-index: 54;
   animation: bikeIdle 3.2s ease-in-out infinite;
 }
 
