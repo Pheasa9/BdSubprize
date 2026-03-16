@@ -98,40 +98,6 @@
   filter: blur(18px);
 }
 
-.mountains {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 34%;
-  height: 44%;
-  z-index: 20;
-  overflow: visible;
-}
-
-.mountains::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 14%;
-  background: linear-gradient(to top, var(--grass-mid) 0%, rgba(21, 33, 68, 0) 100%);
-  pointer-events: none;
-}
-
-.mountain {
-  position: absolute;
-  bottom: 0;
-  background: linear-gradient(to top, rgba(12, 16, 26, 0.96), rgba(28, 36, 70, 0.98));
-  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-  filter: drop-shadow(0 0 16px rgba(0, 0, 0, 0.35));
-}
-
-.m1 { left: -6%; width: 34%; height: 100%; }
-.m2 { left: 16%; width: 28%; height: 72%; }
-.m3 { left: 33%; width: 38%; height: 92%; }
-.m4 { left: 60%; width: 28%; height: 70%; }
-.m5 { left: 76%; width: 30%; height: 88%; }
 
 .far-trees {
   position: absolute;
