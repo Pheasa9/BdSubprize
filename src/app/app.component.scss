@@ -456,7 +456,7 @@
 .kids {
   position: absolute;
   left: 50%;
-  top: 58%;
+  top: 68%;
   transform: translate(-50%, -50%) scale(0.95);
   width: 260px;
   height: 120px;
@@ -907,8 +907,9 @@
 
 .bicycle {
   position: absolute;
-  left: 78px;
+  left: 50%;
   bottom: 4px;
+  transform: translateX(-50%);
   width: 124px;
   height: 72px;
   z-index: 35;
