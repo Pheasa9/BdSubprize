@@ -1,6 +1,6 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, Inject, OnDestroy, PLATFORM_ID, ViewChild } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { NavigationEnd, NavigationStart, Router, RouterOutlet } from '@angular/router';
 
 interface Star {
   id: number;
@@ -117,6 +117,7 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   protected introCanEnter = false;
   protected introCountdownHidden = false;
   protected introTitleShown = false;
+  protected routeTransitioning = false;
 
   protected stars: Star[] = this.createStars(140);
   protected pines: Pine[] = this.createPines(24);
@@ -130,6 +131,17 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     if (!isPlatformBrowser(this.platformId)) {
       this.showIntro = false;
     }
+
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationStart) {
+        this.routeTransitioning = true;
+      }
+      if (event instanceof NavigationEnd) {
+        setTimeout(() => {
+          this.routeTransitioning = false;
+        }, 280);
+      }
+    });
   }
 
   ngAfterViewInit(): void {

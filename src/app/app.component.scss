@@ -34,6 +34,18 @@
   z-index: 3000;
 }
 
+.route-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.28s ease;
+}
+
+.route-transitioning {
+  opacity: 0.22;
+  pointer-events: none;
+}
+
 .scene {
   position: relative;
   width: 100%;

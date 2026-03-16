@@ -231,5 +231,7 @@
   <div class="global-music-status" *ngIf="!showIntro && musicStatus">{{ musicStatus }}</div>
   <div class="app-version" *ngIf="!showIntro">v{{ appVersion }}</div>
 
-  <router-outlet></router-outlet>
+  <div class="route-container" [class.route-transitioning]="routeTransitioning">
+    <router-outlet></router-outlet>
+  </div>
 </div>
