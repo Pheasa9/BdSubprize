@@ -62,6 +62,9 @@ export class HomeComponent implements OnInit {
   birthdayName: string = 'Birthday Girl';
 
   constructor(private router: Router) {}
+  goToLovescape() {
+    this.router.navigate(['/lovescape']);
+  }
 
   ngOnInit() {
     this.petals = this.createPetals(40);

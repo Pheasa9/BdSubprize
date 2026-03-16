@@ -1,11 +1,235 @@
 <div class="app-shell">
   <audio #globalMusic loop preload="auto" [src]="sharedMusicSrc" (error)="onGlobalMusicError()"></audio>
 
-  <button class="global-music-toggle" type="button" (click)="toggleGlobalMusic()">
+  <section class="intro-overlay" *ngIf="showIntro">
+    <div class="scene">
+      <div class="moon"></div>
+
+      <div class="stars" aria-hidden="true">
+        <span
+          *ngFor="let star of stars; trackBy: trackById"
+          class="star"
+          [style.left.%]="star.left"
+          [style.top.%]="star.top"
+          [style.width.px]="star.size"
+          [style.height.px]="star.size"
+          [style.animationDuration]="star.duration + 's'"
+          [style.animationDelay]="star.delay + 's'">
+        </span>
+      </div>
+
+      <div class="haze"></div>
+
+      <div class="mountains" aria-hidden="true">
+        <div class="mountain m1"></div>
+        <div class="mountain m2"></div>
+        <div class="mountain m3"></div>
+        <div class="mountain m4"></div>
+        <div class="mountain m5"></div>
+      </div>
+
+      <div class="far-trees" aria-hidden="true">
+        <div
+          *ngFor="let pine of pines; trackBy: trackById"
+          class="pine"
+          [style.left.%]="pine.left"
+          [style.transform]="'scale(' + pine.scale + ')'">
+          <div class="trunk"></div>
+          <div class="layer l1"></div>
+          <div class="layer l2"></div>
+          <div class="layer l3"></div>
+        </div>
+      </div>
+
+      <canvas #introFireworks class="fireworks"></canvas>
+
+      <div class="hill" aria-hidden="true">
+        <div class="path"></div>
+        <div class="pond"></div>
+        <div class="mist"></div>
+
+        <div class="lamp">
+          <div class="glow"></div>
+          <div class="head"></div>
+          <div class="pole"></div>
+        </div>
+
+        <div class="bench">
+          <div class="seat"></div>
+          <div class="leg l1"></div>
+          <div class="leg l2"></div>
+        </div>
+
+        <div class="grass-lines">
+          <span
+            *ngFor="let blade of grassBlades; trackBy: trackById"
+            class="blade"
+            [style.left.%]="blade.left"
+            [style.height.px]="blade.height"
+            [style.--blade-tilt]="blade.rotate + 'deg'"
+            [style.--bDur]="blade.duration + 's'"
+            [style.opacity]="blade.opacity">
+          </span>
+        </div>
+
+        <div class="flower-field">
+          <div
+            *ngFor="let flower of flowers; trackBy: trackById"
+            class="flower"
+            [style.left.%]="flower.left"
+            [style.height.px]="flower.height"
+            [style.width.px]="flower.width"
+            [style.transform]="'scale(' + flower.scale + ')'"
+            [style.--dur]="flower.swayDuration + 's'"
+            [style.--budDur]="flower.budDuration + 's'"
+            [style.--flower-delay]="flower.motionDelay + 's'"
+            [style.--flower-glow]="flower.glow"
+            [style.--flower-blur]="flower.blur + 'px'">
+            <div class="stem" [style.height.px]="flower.height - 95"></div>
+            <div class="leaf l1"></div>
+            <div class="leaf l2"></div>
+            <div class="leaf l3"></div>
+
+            <div class="bud" [style.bottom.px]="flower.budBottom">
+              <div class="petal p1"></div>
+              <div class="petal p2"></div>
+              <div class="petal p3"></div>
+              <div class="petal p4"></div>
+              <div class="petal p5"></div>
+              <div class="petal p6"></div>
+              <div class="core"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="animals">
+          <div class="kids">
+            <div class="kid girl">
+              <div class="kid-quote">chub hv nh sok ya tv pheasa</div>
+              <div class="k-head">
+                <span class="k-hair"></span>
+                <span class="k-bang"></span>
+                <span class="k-eye left"></span>
+                <span class="k-eye right"></span>
+                <span class="k-mouth"></span>
+              </div>
+              <div class="k-neck"></div>
+              <div class="k-upper">
+                <span class="k-arm left"></span>
+                <span class="k-arm right"></span>
+              </div>
+              <div class="k-lower"></div>
+              <span class="k-leg left"></span>
+              <span class="k-leg right"></span>
+              <span class="k-foot left"></span>
+              <span class="k-foot right"></span>
+            </div>
+
+            <div class="bicycle" aria-hidden="true">
+              <div class="wheel w1"></div>
+              <div class="wheel w2"></div>
+              <div class="frame top"></div>
+              <div class="frame down"></div>
+              <div class="frame rear"></div>
+              <div class="frame front"></div>
+              <div class="seat"></div>
+              <div class="bar"></div>
+              <div class="pedal"></div>
+            </div>
+
+            <div class="kid boy">
+              <div class="kid-quote">okay sokya</div>
+              <div class="k-head">
+                <span class="k-hair"></span>
+                <span class="k-bang"></span>
+                <span class="k-eye left"></span>
+                <span class="k-eye right"></span>
+                <span class="k-mouth"></span>
+              </div>
+              <div class="k-neck"></div>
+              <div class="k-upper">
+                <span class="k-arm left"></span>
+                <span class="k-arm right"></span>
+              </div>
+              <div class="k-lower"></div>
+              <span class="k-leg left"></span>
+              <span class="k-leg right"></span>
+              <span class="k-foot left"></span>
+              <span class="k-foot right"></span>
+            </div>
+          </div>
+
+          <div class="rabbit">
+            <div class="head">
+              <div class="ear e1"></div>
+              <div class="ear e2"></div>
+              <div class="eye"></div>
+            </div>
+            <div class="body"></div>
+            <div class="leg rl1"></div>
+            <div class="leg rl2"></div>
+            <div class="tail"></div>
+          </div>
+
+          <div class="fox">
+            <div class="head">
+              <div class="ear e1"></div>
+              <div class="ear e2"></div>
+            </div>
+            <div class="body"></div>
+            <div class="leg fl1"></div>
+            <div class="leg fl2"></div>
+            <div class="tail"></div>
+          </div>
+
+          <div class="bear">
+            <div class="balloons">
+              <div class="balloon b1"></div>
+              <div class="balloon b2"></div>
+              <div class="balloon b3"></div>
+              <div class="string s1"></div>
+              <div class="string s2"></div>
+              <div class="string s3"></div>
+            </div>
+
+            <div class="body">
+              <div class="arm a1"></div>
+              <div class="arm a2"></div>
+              <div class="leg l1"></div>
+              <div class="leg l2"></div>
+            </div>
+
+            <div class="head">
+              <div class="ear er1"></div>
+              <div class="ear er2"></div>
+              <div class="eye ey1"></div>
+              <div class="eye ey2"></div>
+              <div class="face"><div class="nose"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="title" [class.show]="introTitleShown">
+        <div class="line1 type-slow">Happy Birthday</div>
+        <div class="line2">SOKYA</div>
+      </div>
+
+      <div class="countdown" [class.hide]="introCountdownHidden">
+        <div class="num">{{ introSeconds }}</div>
+      </div>
+
+      <button class="intro-enter-label" *ngIf="introCanEnter" type="button" (click)="enterLovescapeFromIntro()">
+        Enter Love Escape
+      </button>
+    </div>
+  </section>
+
+  <button class="global-music-toggle" *ngIf="!showIntro" type="button" (click)="toggleGlobalMusic()">
     {{ musicPlaying ? 'Pause Music' : 'Play Music' }}
   </button>
-  <div class="global-music-status" *ngIf="musicStatus">{{ musicStatus }}</div>
-  <div class="app-version">v{{ appVersion }}</div>
+  <div class="global-music-status" *ngIf="!showIntro && musicStatus">{{ musicStatus }}</div>
+  <div class="app-version" *ngIf="!showIntro">v{{ appVersion }}</div>
 
   <router-outlet></router-outlet>
 </div>

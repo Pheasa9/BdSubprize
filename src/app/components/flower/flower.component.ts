@@ -34,6 +34,14 @@ export class FlowerComponent implements AfterViewInit, OnDestroy {
     void this.router.navigate(['/']);
   }
 
+  protected goLovescape(): void {
+    void this.router.navigate(['/lovescape']);
+  }
+
+  protected goLoveBook(): void {
+    void this.router.navigate(['/lovescape']);
+  }
+
   ngAfterViewInit(): void {
     if (!isPlatformBrowser(this.platformId)) {
       return;

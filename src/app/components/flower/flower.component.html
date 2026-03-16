@@ -1,9 +1,17 @@
 <div class="flower-canvas-page">
   <canvas #flowerCanvas></canvas>
 
-  <button class="back-text" type="button" (click)="goHome()" aria-label="Back to Home">
-    back
-  </button>
+  <div class="flower-actions">
+    <button class="back-text" type="button" (click)="goHome()" aria-label="See Park">
+      park
+    </button>
+    <button class="nav-text" type="button" (click)="goLovescape()" aria-label="Go to Lovescape">
+      lovescape
+    </button>
+    <button class="nav-text" type="button" (click)="goLoveBook()" aria-label="Open Birthday Book">
+      book
+    </button>
+  </div>
 
   <div class="fx" aria-hidden="true"></div>
   <div class="hint">Just for my beautiful girlfriend, created by: <span class="smos">SMOS</span>.</div>

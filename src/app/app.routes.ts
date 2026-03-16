@@ -3,14 +3,22 @@ import { HomeComponent } from './pages/home/home.component';
 import { GalleryComponent } from './pages/gallery/gallery.component';
 import { NoteComponent } from './pages/note/note.component';
 import { FlowerComponent } from './components/flower/flower.component';
+
 import { WishesComponent } from './pages/wishes/wishes.component';
 import { TimelineComponent } from './pages/timeline/timeline.component';
+
+import { LovescapeComponent } from './pages/lovescape/lovescape.component';
 
 export const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
     data: { animation: 'HomePage' }
+  },
+  {
+    path: 'lovescape',
+    component: LovescapeComponent,
+    data: { animation: 'LovescapePage' }
   },
   {
     path: 'flower',
